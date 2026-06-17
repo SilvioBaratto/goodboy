@@ -8,8 +8,9 @@ Oracle-verifiable criteria tested here:
          between the human-feedback and AI-feedback models, citing real numbers
          from demo/metrics/rlhf_vs_rlaif.json and the per-model metrics.
 
-  [UNIT] Does NOT add the final README results section, stage diagrams, or
-         embedded charts (reserved for Cycle 3).
+  [UNIT] README now HAS the Cycle-3 results section, stage diagrams, and the
+         embedded weight-delta chart (these guards were flipped from negative
+         to positive when Cycle 3 / issue #10 delivered them).
 
 Skipped (oracle: NOT VERIFIABLE):
   - Explicitly discusses bias/diversity trade-off
@@ -109,45 +110,44 @@ def test_when_metrics_json_is_parsed_then_at_least_one_numeric_value_appears_in_
 
 
 # ---------------------------------------------------------------------------
-# Criterion: README.md must NOT gain a results section, stage diagrams,
-#            or embedded charts (all reserved for Cycle 3 / feature 9)
+# Criterion (Cycle 3 / issue #10): README.md now HAS the results section and
+#            the embedded weight-delta chart — these guards were flipped from
+#            negative ("must NOT gain ...") to positive assertions.
 # ---------------------------------------------------------------------------
 
 
-def test_when_readme_is_checked_then_no_results_section_heading_is_present():
+def test_when_readme_is_checked_then_results_section_heading_is_present():
     """
-    Feature 9 (results section in README) is reserved for Cycle 3.
-    A heading containing 'Results' must not appear in README.md.
-    """
-    assert README_PATH.exists(), f"{README_PATH} must exist"
-    text = README_PATH.read_text(encoding="utf-8")
-    assert not re.search(r"^#{1,6}\s+Results\b", text, re.MULTILINE | re.IGNORECASE), (
-        "README.md must not contain a 'Results' section heading (reserved for Cycle 3)"
-    )
-
-
-def test_when_readme_is_checked_then_no_embedded_image_markup_is_present():
-    """
-    Embedded charts and images in README.md are reserved for Cycle 3.
-    Neither markdown image syntax (![) nor HTML <img> tags should be present.
+    Feature 9 (results section in README) has been delivered in Cycle 3.
+    A heading containing 'Results' must now appear in README.md.
     """
     assert README_PATH.exists(), f"{README_PATH} must exist"
     text = README_PATH.read_text(encoding="utf-8")
-    assert "![" not in text, (
-        "README.md must not contain embedded image markdown ![...] (reserved for Cycle 3)"
-    )
-    assert "<img" not in text.lower(), (
-        "README.md must not contain <img> tags (reserved for Cycle 3)"
+    assert re.search(r"^#{1,6}\s+Results\b", text, re.MULTILINE | re.IGNORECASE), (
+        "README.md must contain a 'Results' section heading"
     )
 
 
-def test_when_readme_is_checked_then_no_mermaid_diagram_block_is_present():
+def test_when_readme_is_checked_then_embedded_image_markup_is_present():
     """
-    Stage diagrams in README.md are reserved for Cycle 3.
-    Mermaid fenced code blocks must not be present.
+    The weight-delta chart is now embedded in README.md as a markdown image.
+    Markdown image syntax (![) must be present.
     """
     assert README_PATH.exists(), f"{README_PATH} must exist"
     text = README_PATH.read_text(encoding="utf-8")
-    assert "```mermaid" not in text, (
-        "README.md must not contain ```mermaid diagram blocks (reserved for Cycle 3)"
+    assert "![" in text, (
+        "README.md must contain embedded image markdown ![...] for the weight-delta chart"
+    )
+
+
+def test_when_readme_is_checked_then_weight_delta_chart_is_referenced():
+    """
+    The weight-delta chart artifact path (demo/metrics/weight_delta.png) must
+    be referenced in README.md — it is the gitignored generated chart added in Cycle 3.
+    Stage diagrams are rendered as ASCII (not mermaid) in this repo.
+    """
+    assert README_PATH.exists(), f"{README_PATH} must exist"
+    text = README_PATH.read_text(encoding="utf-8")
+    assert "demo/metrics/weight_delta.png" in text, (
+        "README.md must reference demo/metrics/weight_delta.png (the weight-delta chart)"
     )

@@ -1,0 +1,4 @@
+[tool.pytest.ini_options]
+markers = [
+    "slow: CPU model-training smoke test (~seconds-to-a-minute, downloads gpt2 on first run)",
+]
