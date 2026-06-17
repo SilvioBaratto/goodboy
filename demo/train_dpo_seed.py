@@ -47,6 +47,7 @@ def build_config() -> DPOConfig:
         beta=0.1,
         max_length=256,
         precompute_ref_log_probs=True,
+        bf16=False,  # TRL defaults bf16=True; force fp32 for CPUs without bf16
         logging_steps=10,
         save_strategy="no",
         report_to="none",
