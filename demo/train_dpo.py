@@ -50,6 +50,7 @@ def main() -> None:
         beta=0.1,                  # KL strength: how hard we pull toward 'chosen'
         max_length=256,
         precompute_ref_log_probs=True,  # save memory on CPU
+        bf16=False,  # TRL defaults bf16=True; force fp32 for CPUs without bf16
         logging_steps=10,
         save_strategy="no",
         report_to="none",
