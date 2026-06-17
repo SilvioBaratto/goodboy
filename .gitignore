@@ -220,6 +220,13 @@ __marimo__/
 # Knowledge graph output
 graphify-out/
 
+# Regeneratable training artifacts (RLHF/RLAIF aligned checkpoints)
+demo/aligned/
+demo/aligned_seed/
+
+# Generated metric artifacts (reward scores, weight delta, comparison report)
+demo/metrics/
+
 # Code generator state
 .code-generator/
 

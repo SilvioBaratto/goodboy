@@ -17,6 +17,7 @@ BASE_MODEL: str = "gpt2"
 
 HERE: Path = Path(__file__).resolve().parent
 ALIGNED: Path = HERE.parent / "aligned"
+ALIGNED_SEED: Path = HERE.parent / "aligned_seed"
 DATA: Path = HERE.parent / "data" / "preferences.jsonl"
 
 HELD_OUT_PROMPTS: list[str] = [
@@ -43,6 +44,17 @@ def load_aligned() -> AutoModelForCausalLM:
     if not ALIGNED.exists():
         raise SystemExit("No demo/aligned/ found. Run: python demo/train_dpo.py")
     return AutoModelForCausalLM.from_pretrained(str(ALIGNED)).eval()  # type: ignore
+
+
+def load_model_from(path: Path) -> AutoModelForCausalLM:
+    """Return a DPO-aligned GPT-2 from *path* in eval mode.
+
+    Path-parametric variant of load_aligned(); use for any checkpoint directory.
+    """
+    p = Path(path)
+    if not p.exists():
+        raise SystemExit(f"No model found at {p}. Check the path and run the training script.")
+    return AutoModelForCausalLM.from_pretrained(str(p)).eval()  # type: ignore
 
 
 def generate(model: AutoModelForCausalLM, tokenizer: AutoTokenizer, prompt: str) -> str:

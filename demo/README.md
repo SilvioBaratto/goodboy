@@ -27,17 +27,30 @@ gpt2 (base) ──DPO on preference pairs──▶ demo/aligned/
 
 ```bash
 pip install -r demo/requirements.txt
-python demo/train_dpo.py    # trains, saves demo/aligned/  (minutes on CPU)
+
+# Cycle 1 — RLAIF alignment (1000 AI-generated pairs)
+python demo/train_dpo.py    # trains, saves demo/aligned/       (~hours on CPU)
 python demo/compare.py      # base vs aligned, side by side
+
+# Cycle 2 — RLHF vs RLAIF experiment
+python demo/train_dpo_seed.py       # RLHF model → demo/aligned_seed/  (~5 min on CPU)
+python demo/compare_rlhf_rlaif.py   # generates demo/metrics/rlhf_vs_rlaif.json
 ```
+
+See `demo/RLHF_vs_RLAIF.md` for the full analysis: behavior divergence,
+reward scores, weight deltas, and the bias/diversity trade-off.
 
 ## Files
 
 | File | Role |
 |------|------|
-| `data/preferences.jsonl` | preference pairs (`prompt`, `chosen`, `rejected`) |
-| `train_dpo.py` | DPO fine-tune `gpt2` → `aligned/` |
-| `compare.py` | before/after behaviour on held-out prompts |
+| `data/preferences.jsonl` | 1000 AI-generated preference pairs (RLAIF training) |
+| `data/seed_examples.jsonl` | 12 human-written pairs (RLHF training) |
+| `train_dpo.py` | DPO fine-tune `gpt2` → `aligned/` (RLAIF) |
+| `train_dpo_seed.py` | DPO fine-tune `gpt2` → `aligned_seed/` (RLHF) |
+| `compare.py` | before/after behaviour on held-out prompts (RLAIF) |
+| `compare_rlhf_rlaif.py` | RLHF vs RLAIF comparison driver; writes `metrics/` |
+| `RLHF_vs_RLAIF.md` | Analysis: divergence, diversity trade-off, honest caveats |
 
 ## Honest caveats
 

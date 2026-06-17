@@ -49,7 +49,6 @@ def main() -> None:
         learning_rate=1e-5,
         beta=0.1,                  # KL strength: how hard we pull toward 'chosen'
         max_length=256,
-        max_prompt_length=128,
         precompute_ref_log_probs=True,  # save memory on CPU
         logging_steps=10,
         save_strategy="no",

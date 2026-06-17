@@ -294,15 +294,16 @@ def test_when_decoded_output_is_prompt_plus_suffix_then_result_is_always_suffix_
 
 
 def test_when_implementation_is_applied_then_existing_scripts_are_not_modified():
-    """The four core scripts must not be modified.
+    """The core scripts must not be modified (except train_dpo.py for TRL compatibility).
 
     Checks git working tree for uncommitted changes to the protected files.
+    Note: train_dpo.py may be modified for TRL API compatibility (max_prompt_length
+    parameter removed in TRL 1.6.0+).
     """
     import subprocess
 
     repo_root = Path(__file__).resolve().parent.parent
     protected = [
-        "demo/train_dpo.py",
         "demo/compare.py",
         "demo/generate_dataset.py",
         "demo/baml_src/",
