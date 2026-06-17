@@ -1,0 +1,6 @@
+{
+  "include": ["demo", "tests"],
+  "exclude": ["demo/baml_client/**"],
+  "typeCheckingMode": "standard",
+  "reportMissingImports": false
+}

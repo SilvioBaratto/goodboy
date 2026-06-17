@@ -1,0 +1,7 @@
+torch>=2.2
+transformers>=4.51
+trl>=1.0.0
+datasets>=2.18
+matplotlib>=3.8
+sentencepiece>=0.2
+protobuf
